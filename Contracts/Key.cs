@@ -6,18 +6,11 @@ namespace IdentityService.Keys
     public class Key
     {
         [Required]
-        public DateTime CreationDate { get; }
+        public string Value { get; set; }
         [Required]
-        public string Value { get; }
+        public DateTime CreationDate { get; set; }
         [Required]
-        public KeyType Type { get; }
-        public bool IsValid { get { return CreationDate > DateTime.Now; } }
-
-        public Key(DateTime creationDate, string value, KeyType type)
-        {
-            CreationDate = creationDate;
-            Value = value;
-            Type = type;    
-        }
+        public DateTime ExpirationDate { get; set; }
+        public bool IsValid { get { return ExpirationDate > DateTime.Now; } }
     }
 }

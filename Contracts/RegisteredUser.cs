@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace IdentityService.Contracts
+﻿namespace IdentityService.Contracts
 {
     public class RegisteredUser
     {

@@ -11,6 +11,6 @@ namespace IdentityService.Contracts
         public Key SignedPreKey { get; }
         [Required]
         [MinLength(200)]
-        public List<Key> OneTimePreKeys { get; }
+        public Key[] OneTimePreKeys { get; }
     }
 }
