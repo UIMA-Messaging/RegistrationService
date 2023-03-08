@@ -22,7 +22,7 @@ namespace IdentityService.Errors
                 var res = context.Response;
                 res.StatusCode = httpException.StatusCode;
                 res.ContentType = "application/json; charset=utf-8";
-                var body = new { Type = httpException?.Type.ToString(), httpException?.Message };
+                var body = new { httpException?.Message };
                 await res.WriteAsync(JsonSerializer.Serialize(body));
             }
         }

@@ -5,7 +5,7 @@ using IdentityService.Services.Register;
 namespace IdentityService.Controllers
 {
     [ApiController]
-    [Route("api/v1/users")]
+    [Route("users")]
     public class RegistrationController : ControllerBase
     {
         private readonly IRegistrationService service;
