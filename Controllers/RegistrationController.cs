@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using IdentityService.Contracts;
-using IdentityService.Services.Register;
+using RegistrationApi.Contracts;
+using RegistrationApi.Services.Register;
 
-namespace IdentityService.Controllers
+namespace RegistrationApi.Controllers
 {
     [ApiController]
     [Route("users")]

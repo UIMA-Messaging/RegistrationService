@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace IdentityService.Errors
+namespace RegistrationApi.Errors
 {
     internal class HttpExceptionMiddleware
     {

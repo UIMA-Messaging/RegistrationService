@@ -1,6 +1,6 @@
 ﻿using ChannelService.Repository.Connection;
 using Dapper;
-using IdentityService.Contracts;
+using RegistrationApi.Contracts;
 
 namespace ChannelService.Repository
 {
@@ -13,14 +13,25 @@ namespace ChannelService.Repository
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        public async Task<(bool, int)> CheckUserExists(string displayName)
+        public async Task<(bool, int)> CheckDisplayNameAvailability(string displayName)
         {
             using var connection = factory.GetOpenConnection();
             const string sql = @"
-                SELECT CASE WHEN COUNT(*) != 0 THEN 1 ELSE 0 END, COUNT(*) + 1
+                SELECT CASE WHEN COUNT(*) != 0 THEN 1 ELSE 0 END, (SELECT COUNT(*) + 1 FROM Users)
                 FROM Users
                 WHERE DisplayName = @DisplayName";
             return await connection.QueryFirstAsync<(bool, int)>(sql, new { DisplayName = displayName });
+        }
+
+        public async Task<RegisteredUser> GetUserByUsername(string username)
+        {
+            using var connection = factory.GetOpenConnection();
+            const string sql = @"
+                SELECT *
+                FROM Users
+                WHERE Username = @Username";
+            var results = await connection.QueryAsync<RegisteredUser>(sql, new { Username = username });
+            return results.FirstOrDefault();
         }
 
         public async Task CreateUser(RegisteredUser user)

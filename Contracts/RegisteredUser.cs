@@ -1,4 +1,4 @@
-﻿namespace IdentityService.Contracts
+﻿namespace RegistrationApi.Contracts
 {
     public class RegisteredUser
     {

@@ -1,10 +1,11 @@
-﻿using IdentityService.Contracts;
+﻿using RegistrationApi.Contracts;
 
-namespace IdentityService.Services.Register
+namespace RegistrationApi.Services.Register
 {
     public interface IRegistrationService
     {
         public Task<RegisteredUser> RegisterUser(BasicUser user);
+
         public Task UnregisterUser(string userId);
     }
 }

@@ -1,8 +1,10 @@
 using ChannelService.Repository;
 using ChannelService.Repository.Connection;
 using System.Text.Json.Serialization;
-using IdentityService.Errors;
-using IdentityService.Services.Register;
+using RegistrationApi.Errors;
+using RegistrationApi.Services.Register;
+using RegistrationApi.EventBus;
+using RegistrationApi.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +25,11 @@ builder.Services.AddControllers();
 // Repositories
 builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
 
-// Services
-builder.Services.AddTransient<IRegistrationService>(i => new RegistrationService(i.GetRequiredService<UserRepository>()));
+// RabbitMQ
+builder.Services.AddSingleton(_ => new RabbitMQHelper<RegisteredUser>("localhost", "registrationQueue", "registrations"));
 
+// Services
+builder.Services.AddTransient<IRegistrationService>(i => new RegistrationService(i.GetRequiredService<UserRepository>(), i.GetRequiredService<RabbitMQHelper<RegisteredUser>>()));
 
 var app = builder.Build();
 

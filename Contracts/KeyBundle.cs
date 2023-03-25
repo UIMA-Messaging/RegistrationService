@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using IdentityService.Keys;
+using RegistrationApi.Keys;
 
-namespace IdentityService.Contracts
+namespace RegistrationApi.Contracts
 {
     public class KeyBundle
     {

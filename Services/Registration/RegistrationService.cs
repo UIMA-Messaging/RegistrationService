@@ -1,21 +1,24 @@
 ﻿using ChannelService.Repository;
-using IdentityService.Contracts;
-using IdentityService.Errors;
+using RegistrationApi.Contracts;
+using RegistrationApi.Errors;
+using RegistrationApi.EventBus;
 
-namespace IdentityService.Services.Register
+namespace RegistrationApi.Services.Register
 {
     public class RegistrationService : IRegistrationService
     {
         private readonly UserRepository repository;
+        private readonly RabbitMQHelper<RegisteredUser> bus;
 
-        public RegistrationService(UserRepository repository)
+        public RegistrationService(UserRepository repository, RabbitMQHelper<RegisteredUser> bus)
         {
             this.repository = repository;
+            this.bus = bus;
         }
 
         public async Task<RegisteredUser> RegisterUser(BasicUser user)
         {
-            var (exists, placement) = await repository.CheckUserExists(user.DisplayName);
+            var (exists, placement) = await repository.CheckDisplayNameAvailability(user.DisplayName);
 
             if (exists) 
             {
@@ -34,6 +37,8 @@ namespace IdentityService.Services.Register
             };
 
             await repository.CreateUser(registeredUser);
+
+            bus.Send(registeredUser, "users.new");
 
             return registeredUser;
         }

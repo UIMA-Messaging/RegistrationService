@@ -1,4 +1,4 @@
-﻿namespace IdentityService.Errors
+﻿namespace RegistrationApi.Errors
 {
     public class HttpException : Exception
     {
