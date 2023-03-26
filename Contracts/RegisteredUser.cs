@@ -8,5 +8,6 @@
         public string? Image { get; set; }
         public DateTime? JoinedAt { get; set; }
         public DateTime? EditedAt { get; set; }
+        public string? EphemeralPassword { get; set; }   
     }
 }
