@@ -25,14 +25,17 @@ namespace RegistrationApi.Services.Register
                 throw new UserAlreadyExists();
             }
 
+            string username = $@"{user.DisplayName}#{placement:0000}";
+
             var registeredUser = new RegisteredUser
             {
                 Id = Guid.NewGuid().ToString(),
-                Username = $"{user.DisplayName}#{placement:0000}",
+                Username = username,
                 DisplayName = user.DisplayName,
                 Image = user.Image,
-                JoinedAt = DateTime.UtcNow,
+                JabberId = username,
                 EphemeralPassword = Guid.NewGuid().ToString(),
+                JoinedAt = DateTime.UtcNow,
             };
 
             await repository.CreateUser(registeredUser);
