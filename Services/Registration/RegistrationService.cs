@@ -33,7 +33,6 @@ namespace RegistrationApi.Services.Register
                 Username = username,
                 DisplayName = user.DisplayName,
                 Image = user.Image,
-                JabberId = username,
                 EphemeralPassword = Guid.NewGuid().ToString(),
                 JoinedAt = DateTime.UtcNow,
             };
