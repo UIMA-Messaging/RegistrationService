@@ -45,6 +45,6 @@ jobs:
           image: dockeroo80/uima-registration-service
           tags: latest
           registry: docker.io
-          dockerfile: RegistrationService/Dockerfile
+          dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
