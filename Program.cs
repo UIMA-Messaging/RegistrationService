@@ -1,6 +1,7 @@
 using ChannelService.Repository;
 using ChannelService.Repository.Connection;
 using System.Text.Json.Serialization;
+using Bugsnag;
 using RegistrationApi.Exceptions;
 using RegistrationApi.Services.Register;
 using RegistrationApi.Contracts;
@@ -13,11 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Bugsnag
+builder.Services.AddSingleton<IClient>(_ => new Client(builder.Configuration["Bugsnag:ApiKey"]));
+
 // Serialization
-builder.Services.AddControllers().AddJsonOptions(x =>
+builder.Services.AddControllers().AddJsonOptions(configs =>
 {
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    configs.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    configs.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
 // Controllers
