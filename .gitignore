@@ -366,3 +366,6 @@ FodyWeavers.xsd
 /.idea/.idea.RegistrationService/.idea/indexLayout.xml
 /.idea/.idea.RegistrationService/.idea/misc.xml
 /.idea/.idea.RegistrationService/.idea/vcs.xml
+appsettings.Development.json
+docker-compose.override.yml
+docker-compose.yml
