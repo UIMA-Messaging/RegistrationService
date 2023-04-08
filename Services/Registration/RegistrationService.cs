@@ -1,19 +1,19 @@
 ﻿using ChannelService.Repository;
 using RegistrationApi.Contracts;
 using RegistrationApi.Errors;
-using RegistrationApi.EventBus;
+using RegistrationApi.EventBus.RabbitMQ;
 
 namespace RegistrationApi.Services.Register
 {
     public class RegistrationService : IRegistrationService
     {
         private readonly UserRepository repository;
-        private readonly RabbitMQHelper<RegisteredUser> bus;
+        private readonly IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher;
 
-        public RegistrationService(UserRepository repository, RabbitMQHelper<RegisteredUser> bus)
+        public RegistrationService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher)
         {
             this.repository = repository;
-            this.bus = bus;
+            this.rabbitMQPublisher = rabbitMQPublisher;
         }
 
         public async Task<RegisteredUser> RegisterUser(BasicUser user)
@@ -25,7 +25,7 @@ namespace RegistrationApi.Services.Register
                 throw new UserAlreadyExists();
             }
 
-            string username = $"{user.DisplayName}#{placement:0000}";
+            string username = $@"{user.DisplayName}#{placement:0000}";
 
             var registeredUser = new RegisteredUser
             {
@@ -33,12 +33,13 @@ namespace RegistrationApi.Services.Register
                 Username = username,
                 DisplayName = user.DisplayName,
                 Image = user.Image,
-                JoinedAt = DateTime.UtcNow
+                EphemeralPassword = Guid.NewGuid().ToString(),
+                JoinedAt = DateTime.UtcNow,
             };
 
             await repository.CreateUser(registeredUser);
 
-            bus.Send(registeredUser, "users.new");
+            rabbitMQPublisher.Publish(registeredUser, "users.new");
 
             return registeredUser;
         }
