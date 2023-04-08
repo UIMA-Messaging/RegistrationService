@@ -22,13 +22,13 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Restore packages
-        run: dotnet restore
+        run: dotnet restore RegistrationService.sln
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build RegistrationService.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test RegistrationService.sln --no-restore --verbosity normal
 
   docker:
     needs: build
