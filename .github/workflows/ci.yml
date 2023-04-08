@@ -42,7 +42,7 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
-          image: semestersixdaf/authservice
+          image: dockeroo80/uima-registration-service
           tags: latest
           registry: docker.io
           dockerfile: RegistrationService/Dockerfile
