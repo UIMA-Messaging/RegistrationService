@@ -1,6 +1,6 @@
 ﻿using ChannelService.Repository;
 using RegistrationApi.Contracts;
-using RegistrationApi.Errors;
+using RegistrationApi.Exceptions;
 using RegistrationApi.EventBus.RabbitMQ;
 
 namespace RegistrationApi.Services.Register

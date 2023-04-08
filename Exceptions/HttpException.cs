@@ -1,4 +1,4 @@
-﻿namespace RegistrationApi.Errors
+﻿namespace RegistrationApi.Exceptions
 {
     public class HttpException : Exception
     {
