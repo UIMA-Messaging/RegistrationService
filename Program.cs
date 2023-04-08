@@ -1,7 +1,7 @@
 using ChannelService.Repository;
 using ChannelService.Repository.Connection;
 using System.Text.Json.Serialization;
-using RegistrationApi.Errors;
+using RegistrationApi.Exceptions;
 using RegistrationApi.Services.Register;
 using RegistrationApi.Contracts;
 using RegistrationApi.EventBus.RabbitMQ.Connection;
