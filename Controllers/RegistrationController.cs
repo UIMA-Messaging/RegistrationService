@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using RegistrationApi.Contracts;
-using RegistrationApi.Services.Register;
+using UserService.Contracts;
+using UserService.Services.Register;
 
-namespace RegistrationApi.Controllers
+namespace UserService.Controllers
 {
     [ApiController]
     [Route("users")]
     public class RegistrationController : ControllerBase
     {
-        private readonly IRegistrationService service;
+        private readonly IUserService service;
 
-        public RegistrationController(IRegistrationService service)
+        public RegistrationController(IUserService service)
         {
             this.service = service;
         }

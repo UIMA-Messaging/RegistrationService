@@ -1,16 +1,16 @@
-﻿using ChannelService.Repository;
-using RegistrationApi.Contracts;
-using RegistrationApi.Exceptions;
-using RegistrationApi.EventBus.RabbitMQ;
+﻿using UserService.Contracts;
+using UserService.EventBus.RabbitMQ;
+using UserService.Exceptions;
+using UserService.Repository;
 
-namespace RegistrationApi.Services.Register
+namespace UserService.Services.Register
 {
-    public class RegistrationService : IRegistrationService
+    public class UserService : IUserService
     {
         private readonly UserRepository repository;
         private readonly IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher;
 
-        public RegistrationService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher)
+        public UserService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher)
         {
             this.repository = repository;
             this.rabbitMQPublisher = rabbitMQPublisher;
