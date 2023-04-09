@@ -1,5 +1,5 @@
-using ChannelService.Repository;
-using ChannelService.Repository.Connection;
+using RegistrationApi.Repository;
+using RegistrationApi.Repository.Connection;
 using System.Text.Json.Serialization;
 using Bugsnag;
 using RegistrationApi.Exceptions;

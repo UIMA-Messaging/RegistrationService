@@ -1,8 +1,8 @@
-﻿using ChannelService.Repository.Connection;
-using Dapper;
+﻿using Dapper;
 using RegistrationApi.Contracts;
+using RegistrationApi.Repository.Connection;
 
-namespace ChannelService.Repository
+namespace RegistrationApi.Repository
 {
     public class UserRepository
     {
