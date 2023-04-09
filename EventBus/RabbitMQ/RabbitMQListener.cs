@@ -4,7 +4,7 @@ using RabbitMQ.Client.Events;
 using System.Diagnostics;
 using System.Text;
 
-namespace UserService.EventBus.RabbitMQ
+namespace RegistrationService.EventBus.RabbitMQ
 {
     public class RabbitMQListener<T> : IRabbitMQListener<T>
     {

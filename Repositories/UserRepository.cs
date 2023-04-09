@@ -1,8 +1,8 @@
 ﻿using Dapper;
-using UserService.Contracts;
-using UserService.Repository.Connection;
+using RegistrationService.Contracts;
+using RegistrationService.Repository.Connection;
 
-namespace UserService.Repository
+namespace RegistrationService.Repository
 {
     public class UserRepository
     {

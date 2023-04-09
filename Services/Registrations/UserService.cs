@@ -1,9 +1,9 @@
-﻿using UserService.Contracts;
-using UserService.EventBus.RabbitMQ;
-using UserService.Exceptions;
-using UserService.Repository;
+﻿using RegistrationService.Contracts;
+using RegistrationService.EventBus.RabbitMQ;
+using RegistrationService.Exceptions;
+using RegistrationService.Repository;
 
-namespace UserService.Services.Register
+namespace RegistrationService.Services.Registerations
 {
     public class UserService : IUserService
     {
