@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using UserService.Contracts;
-using UserService.Services.Register;
+using RegistrationService.Contracts;
+using RegistrationService.Services.Registerations;
 
-namespace UserService.Controllers
+namespace RegistrationService.Controllers
 {
     [ApiController]
     [Route("users")]

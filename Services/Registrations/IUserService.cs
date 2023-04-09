@@ -1,6 +1,6 @@
-﻿using UserService.Contracts;
+﻿using RegistrationService.Contracts;
 
-namespace UserService.Services.Register
+namespace RegistrationService.Services.Registerations
 {
     public interface IUserService
     {

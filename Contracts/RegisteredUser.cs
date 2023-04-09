@@ -1,4 +1,4 @@
-﻿namespace UserService.Contracts
+﻿namespace RegistrationService.Contracts
 {
     public class RegisteredUser
     {

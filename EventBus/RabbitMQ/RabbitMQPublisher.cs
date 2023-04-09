@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 using System.Diagnostics;
 using System.Text;
 
-namespace UserService.EventBus.RabbitMQ
+namespace RegistrationService.EventBus.RabbitMQ
 {
     public class RabbitMQPublisher<T> : IRabbitMQPublisher<T>
     {
