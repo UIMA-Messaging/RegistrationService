@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RegistrationApi.Contracts
+namespace UserService.Contracts
 {
     public class BasicUser
     {

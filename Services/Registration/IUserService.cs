@@ -1,8 +1,8 @@
-﻿using RegistrationApi.Contracts;
+﻿using UserService.Contracts;
 
-namespace RegistrationApi.Services.Register
+namespace UserService.Services.Register
 {
-    public interface IRegistrationService
+    public interface IUserService
     {
         public Task<RegisteredUser> RegisterUser(BasicUser user);
 

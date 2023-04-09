@@ -1,4 +1,4 @@
-﻿namespace RegistrationApi.Exceptions
+﻿namespace UserService.Exceptions
 {
     public class HttpException : Exception
     {

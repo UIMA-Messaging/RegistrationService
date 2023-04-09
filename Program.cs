@@ -1,12 +1,12 @@
-using RegistrationApi.Repository;
-using RegistrationApi.Repository.Connection;
+using UserService.Repository;
+using UserService.Repository.Connection;
 using System.Text.Json.Serialization;
 using Bugsnag;
-using RegistrationApi.Exceptions;
-using RegistrationApi.Services.Register;
-using RegistrationApi.Contracts;
-using RegistrationApi.EventBus.RabbitMQ.Connection;
-using RegistrationApi.EventBus.RabbitMQ;
+using UserService.Exceptions;
+using UserService.Services.Register;
+using UserService.Contracts;
+using UserService.EventBus.RabbitMQ.Connection;
+using UserService.EventBus.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,12 +37,12 @@ var rabbitMQConnection = new RabbitMQConnection("localhost").TryConnect();
 builder.Services.AddSingleton<IRabbitMQPublisher<RegisteredUser>>(_ => new RabbitMQPublisher<RegisteredUser>(rabbitMQConnection, "registrations"));
 
 // Services
-builder.Services.AddSingleton<IRegistrationService>(i => new RegistrationService(i.GetRequiredService<UserRepository>(), i.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>()));
+builder.Services.AddSingleton<IUserService>(s => new UserService.Services.Register.UserService(s.GetRequiredService<UserRepository>(), s.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>()));
 
 var app = builder.Build();
 
 // Singleton instantiation
-app.Services.GetService<IRegistrationService>();
+app.Services.GetService<IUserService>();
 
 if (app.Environment.IsDevelopment())
 {

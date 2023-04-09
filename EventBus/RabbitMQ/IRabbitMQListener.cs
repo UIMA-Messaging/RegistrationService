@@ -1,4 +1,4 @@
-﻿namespace RegistrationApi.EventBus.RabbitMQ
+﻿namespace UserService.EventBus.RabbitMQ
 {
     public interface IRabbitMQListener<T>
     {

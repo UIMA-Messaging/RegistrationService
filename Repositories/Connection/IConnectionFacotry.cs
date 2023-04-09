@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace RegistrationApi.Repository.Connection
+namespace UserService.Repository.Connection
 {
     public interface IConnectionFactory
     {
