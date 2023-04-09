@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using System.Data.Common;
 
-namespace ChannelService.Repository.Connection
+namespace UserService.Repository.Connection
 {
     public class ConnectionFactory : IConnectionFactory
     {

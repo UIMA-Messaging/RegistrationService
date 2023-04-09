@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RegistrationApi.Contracts
+namespace UserService.Contracts
 {
     public class BasicUser
     {
@@ -10,6 +10,6 @@ namespace RegistrationApi.Contracts
         public string DisplayName { get; set; }
         [Url]
         public string? Image { get; set; }
-        //public KeyBundle KeyBundle { get; set; }
+        public ExchangeKeys ExchangeKeys { get; set; }
     }
 }
