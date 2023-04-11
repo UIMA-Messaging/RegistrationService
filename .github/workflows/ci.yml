@@ -19,13 +19,13 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Restore packages
-        run: dotnet restore RegistrationService.sln
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build RegistrationService.sln --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test RegistrationService.sln --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity normal
 
   docker:
     needs: build
@@ -43,5 +43,5 @@ jobs:
           tags: latest
           registry: docker.io
           dockerfile: Dockerfile
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: dockeroo80
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
