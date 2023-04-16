@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using RegistrationService.Services;
 using RegistrationService.Contracts;
-using RegistrationService.Services.Registerations;
 
 namespace RegistrationService.Controllers
 {
@@ -8,9 +8,9 @@ namespace RegistrationService.Controllers
     [Route("users")]
     public class RegistrationController : ControllerBase
     {
-        private readonly IUserService service;
+        private readonly UserService service;
 
-        public RegistrationController(IUserService service)
+        public RegistrationController(UserService service)
         {
             this.service = service;
         }

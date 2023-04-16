@@ -3,9 +3,9 @@ using RegistrationService.EventBus.RabbitMQ;
 using RegistrationService.Exceptions;
 using RegistrationService.Repository;
 
-namespace RegistrationService.Services.Registerations
+namespace RegistrationService.Services
 {
-    public class UserService : IUserService
+    public class UserService
     {
         private readonly UserRepository repository;
         private readonly IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher;
@@ -20,7 +20,7 @@ namespace RegistrationService.Services.Registerations
         {
             var (exists, placement) = await repository.CheckDisplayNameAvailability(user.DisplayName);
 
-            if (exists) 
+            if (exists)
             {
                 throw new UserAlreadyExists();
             }
