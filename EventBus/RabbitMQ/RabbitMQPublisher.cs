@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RegistrationService.EventBus.RabbitMQ.Connection;
 using System.Diagnostics;
 using System.Text;
 
@@ -10,18 +11,29 @@ namespace RegistrationService.EventBus.RabbitMQ
         private readonly IModel channel;
         private readonly string exchange;
 
-        public RabbitMQPublisher(IConnection connection, string exchange)
+        public RabbitMQPublisher(IRabbitMQConnection connection, string exchange)
         {
-            channel = connection.CreateModel();
-            this.exchange = exchange;
+            try
+            {
+                var client = connection.TryConnect();
 
-            channel.ExchangeDeclare(exchange, ExchangeType.Topic, durable: true);
+                this.channel = client.CreateModel();
+                this.exchange = exchange;
 
-            Debug.WriteLine($" [x] Ready to publish to exchange {exchange}");
+                channel.ExchangeDeclare(exchange, ExchangeType.Topic, durable: true);
+
+                Debug.WriteLine($" [x] Ready to publish to exchange {exchange}");
+            } 
+            catch
+            {
+
+            }
         }
 
         public void Publish(T message, params string[] routingKeys)
         {
+            if (channel == null) return;
+
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
 

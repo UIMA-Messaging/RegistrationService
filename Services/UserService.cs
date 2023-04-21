@@ -39,7 +39,11 @@ namespace RegistrationService.Services
 
             await repository.CreateUser(registeredUser);
 
-            rabbitMQPublisher.Publish(registeredUser, "users.new");
+            try
+            {
+                rabbitMQPublisher.Publish(registeredUser, "users.new");
+            }
+            catch { }
 
             return registeredUser;
         }
