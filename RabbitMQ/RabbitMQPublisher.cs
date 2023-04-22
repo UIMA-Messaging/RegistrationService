@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RegistrationService.EventBus.RabbitMQ.Connection;
+using RegistrationService.RabbitMQ.Connection;
 using System.Diagnostics;
 using System.Text;
 
-namespace RegistrationService.EventBus.RabbitMQ
+namespace RegistrationService.RabbitMQ
 {
     public class RabbitMQPublisher<T> : IRabbitMQPublisher<T>
     {
@@ -17,17 +17,14 @@ namespace RegistrationService.EventBus.RabbitMQ
             {
                 var client = connection.TryConnect();
 
-                this.channel = client.CreateModel();
+                channel = client.CreateModel();
                 this.exchange = exchange;
 
                 channel.ExchangeDeclare(exchange, ExchangeType.Topic, durable: true);
 
                 Debug.WriteLine($" [x] Ready to publish to exchange {exchange}");
-            } 
-            catch
-            {
-
             }
+            catch { }
         }
 
         public void Publish(T message, params string[] routingKeys)

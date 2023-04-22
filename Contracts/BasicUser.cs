@@ -10,5 +10,6 @@ namespace RegistrationService.Contracts
         public string DisplayName { get; set; }
         [Url]
         public string? Image { get; set; }
+        public ExchangeKeys ExchangeKeys { get; set; }
     }
 }

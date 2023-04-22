@@ -1,19 +1,22 @@
-﻿using RegistrationService.Contracts;
-using RegistrationService.EventBus.RabbitMQ;
+﻿using RegistrationService.RabbitMQ;
+using RegistrationService.Contracts;
 using RegistrationService.Exceptions;
 using RegistrationService.Repository;
+using System.Diagnostics;
 
 namespace RegistrationService.Services
 {
     public class UserService
     {
         private readonly UserRepository repository;
-        private readonly IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher;
+        private readonly IRabbitMQPublisher<RegisteredUser> registeredUserPublisher;
+        private readonly IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher;
 
-        public UserService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> rabbitMQPublisher)
+        public UserService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> registeredUserPublisher, IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher)
         {
             this.repository = repository;
-            this.rabbitMQPublisher = rabbitMQPublisher;
+            this.registeredUserPublisher = registeredUserPublisher;
+            this.keyExchangePublisher = keyExchangePublisher;
         }
 
         public async Task<RegisteredUser> RegisterUser(BasicUser user)
@@ -39,11 +42,25 @@ namespace RegistrationService.Services
 
             await repository.CreateUser(registeredUser);
 
+            user.ExchangeKeys.UserId = registeredUser.Id;
+
             try
             {
-                rabbitMQPublisher.Publish(registeredUser, "users.new");
+                registeredUserPublisher.Publish(registeredUser, "users.new");
             }
-            catch { }
+            catch 
+            {
+                Debug.WriteLine($" [x] Could not publish registered user `{registeredUser.Id}`");
+            }
+
+            try
+            {
+                keyExchangePublisher.Publish(user.ExchangeKeys, "users.new.keys");
+            }
+            catch 
+            {
+                Debug.WriteLine($" [x] Could not publish exchange keys from user `{registeredUser.Id}`");
+            }
 
             return registeredUser;
         }
