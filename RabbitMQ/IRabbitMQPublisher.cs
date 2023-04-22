@@ -1,4 +1,4 @@
-﻿namespace RegistrationService.EventBus.RabbitMQ
+﻿namespace RegistrationService.RabbitMQ
 {
     public interface IRabbitMQPublisher<T>
     {

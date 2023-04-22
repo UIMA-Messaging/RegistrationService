@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace RegistrationService.EventBus.RabbitMQ.Connection
+namespace RegistrationService.RabbitMQ.Connection
 {
     public interface IRabbitMQConnection
     {

@@ -1,12 +1,12 @@
 using RegistrationService.Repository;
 using RegistrationService.Repository.Connection;
 using System.Text.Json.Serialization;
-using Bugsnag;
 using RegistrationService.Exceptions;
-using RegistrationService.Services.Registerations;
 using RegistrationService.Contracts;
-using RegistrationService.EventBus.RabbitMQ.Connection;
-using RegistrationService.EventBus.RabbitMQ;
+using RegistrationService.Services;
+using Bugsnag;
+using RegistrationService.RabbitMQ;
+using RegistrationService.RabbitMQ.Connection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,20 +29,21 @@ builder.Services.AddControllers();
 
 // Repositories
 builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
+builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
 
-// RabbitMQ
-var rabbitMQConnection = new RabbitMQConnection("localhost").TryConnect();
-
-// RabbitMQ - Publishers
-builder.Services.AddSingleton<IRabbitMQPublisher<RegisteredUser>>(_ => new RabbitMQPublisher<RegisteredUser>(rabbitMQConnection, "registrations"));
+//// RabbitMQ
+//var rabbitMQConnection = new RabbitMQConnection(builder.Configuration["RabbitMQ:Uri"]);
+var rabbitMQConnection = new RabbitMQConnection("localhost");
+builder.Services.AddSingleton<IRabbitMQPublisher<RegisteredUser>>(_ => new RabbitMQPublisher<RegisteredUser>(rabbitMQConnection, builder.Configuration["RabbitMQ:Exchange"]));
+builder.Services.AddSingleton<IRabbitMQPublisher<ExchangeKeys>>(_ => new RabbitMQPublisher<ExchangeKeys>(rabbitMQConnection, builder.Configuration["RabbitMQ:Exchange"]));
 
 // Services
-builder.Services.AddSingleton<IUserService>(s => new RegistrationService.Services.Registerations.UserService(s.GetRequiredService<UserRepository>(), s.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>()));
+builder.Services.AddSingleton(s => new UserService(s.GetRequiredService<UserRepository>(), s.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>(), s.GetRequiredService<IRabbitMQPublisher<ExchangeKeys>>()));
 
 var app = builder.Build();
 
 // Singleton instantiation
-app.Services.GetService<IUserService>();
+app.Services.GetService<UserService>();
 
 if (app.Environment.IsDevelopment())
 {
