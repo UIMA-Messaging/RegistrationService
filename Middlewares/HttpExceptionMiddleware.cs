@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using Bugsnag;
+using RegistrationService.Exceptions;
 
-namespace RegistrationService.Exceptions
+namespace RegistrationApi.Middlewares
 {
     internal class HttpExceptionMiddleware
     {
