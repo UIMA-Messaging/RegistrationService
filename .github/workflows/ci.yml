@@ -91,5 +91,5 @@ jobs:
         fi
     - name: Run the updated task
       run: |
-        aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment --task-definition $ECS_TASK_DEFINITION_NAME:1
+        aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment --task-definition $ECS_TASK_DEFINITION_NAME
         
