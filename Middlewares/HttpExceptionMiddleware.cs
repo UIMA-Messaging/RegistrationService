@@ -2,7 +2,7 @@
 using Bugsnag;
 using RegistrationService.Exceptions;
 
-namespace RegistrationApi.Middlewares
+namespace RegistrationService.Middlewares
 {
     internal class HttpExceptionMiddleware
     {
@@ -17,28 +17,24 @@ namespace RegistrationApi.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            int status = default;
-            object body = default;
-
             try
             {
                 await next.Invoke(context);
             }
             catch (HttpException httpException)
             {
-                status = httpException.StatusCode;
-                body = new { httpException?.Message };
+                var body = new { httpException.StatusCode, httpException?.Message };
+                var res = context.Response;
+                res.StatusCode = httpException.StatusCode;
+                res.ContentType = "application/json; charset=utf-8";
+                await res.WriteAsync(JsonSerializer.Serialize(body));
             }
             catch (Exception exception)
             {
                 bugsnag.Notify(exception);
-                status = 500;
-                body = "Internal server error occured.";
-            }
-            finally
-            {
+                var body = new { StatusCode = 500, Message = "Internal server error occured." };
                 var res = context.Response;
-                res.StatusCode = status;
+                res.StatusCode = 500;
                 res.ContentType = "application/json; charset=utf-8";
                 await res.WriteAsync(JsonSerializer.Serialize(body));
             }

@@ -18,7 +18,7 @@ namespace RegistrationService.Repository
             await using var connection = factory.GetOpenConnection();
             const string sql = @"
                 SELECT CASE WHEN COUNT(*) != 0 THEN 1 ELSE 0 END, (SELECT COUNT(*) + 1 FROM ""Users"")
-                FROM ""Users""
+                FROM public.""Users""
                 WHERE DisplayName = @DisplayName";
             return await connection.QueryFirstAsync<(bool, int)>(sql, new { DisplayName = displayName });
         }
@@ -28,7 +28,7 @@ namespace RegistrationService.Repository
             await using var connection = factory.GetOpenConnection();
             const string sql = @"
                 SELECT *
-                FROM ""Users""
+                FROM public.""Users""
                 WHERE Username = @Username";
             var results = await connection.QueryAsync<RegisteredUser>(sql, new { Username = username });
             return results.FirstOrDefault();
@@ -38,7 +38,7 @@ namespace RegistrationService.Repository
         {
             await using var connection = factory.GetOpenConnection();
             const string sql = @"
-                INSERT INTO ""Users""(Id, Jid, Username, DisplayName, Image, JoinedAt)
+                INSERT INTO public.""Users""(Id, Jid, Username, DisplayName, Image, JoinedAt)
                 VALUES (@Id, @Jid, @Username, @DisplayName, @Image, CURRENT_TIMESTAMP)";
             await connection.ExecuteAsync(sql, user);
         }
@@ -46,7 +46,7 @@ namespace RegistrationService.Repository
         public async Task DeleteUser(string userId)
         {
             await using var connection = factory.GetOpenConnection();
-            const string sql = @"DELETE FROM ""Users"" WHERE Id = @Id";
+            const string sql = @"DELETE FROM public.""Users"" WHERE Id = @Id";
             await connection.ExecuteAsync(sql, new { Id = userId });
         }
     }

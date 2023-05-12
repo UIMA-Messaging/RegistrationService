@@ -8,7 +8,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
     <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
-    <RootNamespace>RegistrationApi</RootNamespace>
+    <RootNamespace>RegistrationService</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />

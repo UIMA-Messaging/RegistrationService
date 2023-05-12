@@ -1,11 +1,10 @@
 using RegistrationService.Repository;
 using RegistrationService.Repository.Connection;
 using System.Text.Json.Serialization;
-using RegistrationService.Exceptions;
 using RegistrationService.Contracts;
 using RegistrationService.Services;
 using Bugsnag;
-using RegistrationApi.Middlewares;
+using RegistrationService.Middlewares;
 using RegistrationService.RabbitMQ;
 using RegistrationService.RabbitMQ.Connection;
 
@@ -33,7 +32,7 @@ builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(buil
 builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
 
 //// RabbitMQ
-var rabbitMQConnection = new RabbitMQConnection(builder.Configuration["RabbitMQ:Uri"]);
+var rabbitMQConnection = new RabbitMQConnection(builder.Configuration["RabbitMQ:Uri"], builder.Configuration["RabbitMQ:Username"], builder.Configuration["RabbitMQ:Password"]);
 builder.Services.AddSingleton<IRabbitMQPublisher<RegisteredUser>>(_ => new RabbitMQPublisher<RegisteredUser>(rabbitMQConnection, builder.Configuration["RabbitMQ:Exchange"]));
 builder.Services.AddSingleton<IRabbitMQPublisher<ExchangeKeys>>(_ => new RabbitMQPublisher<ExchangeKeys>(rabbitMQConnection, builder.Configuration["RabbitMQ:Exchange"]));
 
