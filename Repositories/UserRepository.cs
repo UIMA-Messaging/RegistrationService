@@ -15,7 +15,7 @@ namespace RegistrationService.Repository
 
         public async Task<(bool, int)> CheckDisplayNameAvailability(string displayName)
         {
-            using var connection = factory.GetOpenConnection();
+            await using var connection = factory.GetOpenConnection();
             const string sql = @"
                 SELECT CASE WHEN COUNT(*) != 0 THEN 1 ELSE 0 END, (SELECT COUNT(*) + 1 FROM ""Users"")
                 FROM ""Users""
@@ -25,7 +25,7 @@ namespace RegistrationService.Repository
 
         public async Task<RegisteredUser> GetUserByUsername(string username)
         {
-            using var connection = factory.GetOpenConnection();
+            await using var connection = factory.GetOpenConnection();
             const string sql = @"
                 SELECT *
                 FROM ""Users""
@@ -36,16 +36,16 @@ namespace RegistrationService.Repository
 
         public async Task CreateUser(RegisteredUser user)
         {
-            using var connection = factory.GetOpenConnection();
+            await using var connection = factory.GetOpenConnection();
             const string sql = @"
-                INSERT INTO ""Users""(Id, Username, DisplayName, Image, JoinedAt)
-                VALUES (@Id, @Username, @DisplayName, @Image, CURRENT_TIMESTAMP)";
+                INSERT INTO ""Users""(Id, Jid, Username, DisplayName, Image, JoinedAt)
+                VALUES (@Id, @Jid, @Username, @DisplayName, @Image, CURRENT_TIMESTAMP)";
             await connection.ExecuteAsync(sql, user);
         }
 
         public async Task DeleteUser(string userId)
         {
-            using var connection = factory.GetOpenConnection();
+            await using var connection = factory.GetOpenConnection();
             const string sql = @"DELETE FROM ""Users"" WHERE Id = @Id";
             await connection.ExecuteAsync(sql, new { Id = userId });
         }

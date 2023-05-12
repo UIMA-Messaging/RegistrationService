@@ -9,12 +9,14 @@ namespace RegistrationService.Services
     public class UserService
     {
         private readonly UserRepository repository;
+        private readonly string jabberHost;
         private readonly IRabbitMQPublisher<RegisteredUser> registeredUserPublisher;
         private readonly IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher;
 
-        public UserService(UserRepository repository, IRabbitMQPublisher<RegisteredUser> registeredUserPublisher, IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher)
+        public UserService(UserRepository repository, string jabberHost, IRabbitMQPublisher<RegisteredUser> registeredUserPublisher, IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher)
         {
             this.repository = repository;
+            this.jabberHost = jabberHost;
             this.registeredUserPublisher = registeredUserPublisher;
             this.keyExchangePublisher = keyExchangePublisher;
         }
@@ -28,11 +30,12 @@ namespace RegistrationService.Services
                 throw new UserAlreadyExists();
             }
 
-            string username = $@"{user.DisplayName}#{placement:0000}";
+            var username = $@"{user.DisplayName}#{placement:0000}";
 
             var registeredUser = new RegisteredUser
             {
                 Id = Guid.NewGuid().ToString(),
+                Jid = $@"{username}@{jabberHost}",
                 Username = username,
                 DisplayName = user.DisplayName,
                 Image = user.Image,
