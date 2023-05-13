@@ -8,16 +8,16 @@ namespace RegistrationService.RabbitMQ.Connection
 
         public RabbitMQConnection(string host, string username, string password)
         {
-            factory = host == "localhost"
+            factory = Uri.IsWellFormedUriString(host, UriKind.RelativeOrAbsolute)
                 ? new ConnectionFactory
                 {
-                    HostName = host,
+                    Uri = new Uri(host),
                     UserName = username,
                     Password = password
                 }
                 : new ConnectionFactory
                 {
-                    Uri = new Uri(host),
+                    HostName = host,
                     UserName = username,
                     Password = password
                 };
