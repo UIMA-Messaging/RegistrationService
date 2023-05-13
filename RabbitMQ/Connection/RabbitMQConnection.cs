@@ -6,14 +6,25 @@ namespace RegistrationService.RabbitMQ.Connection
     {
         private readonly IConnectionFactory factory;
 
-        public RabbitMQConnection(string uri, string username, string password)
+        public RabbitMQConnection(string host, string username, string password)
         {
-            factory = new ConnectionFactory
-            {
-                Uri = new Uri(uri),
-                UserName = username,
-                Password = password,
-            };
+            Console.WriteLine(host);
+
+            Uri.TryCreate(host, UriKind.RelativeOrAbsolute, out var uri);
+
+            factory = uri != null
+                ? new ConnectionFactory
+                {
+                    Uri = new Uri(host),
+                    UserName = username,
+                    Password = password
+                }
+                : new ConnectionFactory
+                {
+                    HostName = host,
+                    UserName = username,
+                    Password = password
+                };
         }
 
         public IConnection TryConnect()
