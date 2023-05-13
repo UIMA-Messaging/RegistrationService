@@ -8,11 +8,7 @@ namespace RegistrationService.RabbitMQ.Connection
 
         public RabbitMQConnection(string host, string username, string password)
         {
-            Console.WriteLine(host);
-
-            Uri.TryCreate(host, UriKind.RelativeOrAbsolute, out var uri);
-
-            factory = uri != null
+            factory = Uri.IsWellFormedUriString(host, UriKind.Absolute)
                 ? new ConnectionFactory
                 {
                     Uri = new Uri(host),
