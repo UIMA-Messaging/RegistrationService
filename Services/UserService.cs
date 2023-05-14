@@ -68,9 +68,11 @@ namespace RegistrationService.Services
             return registeredUser;
         }
 
-        public async Task UnregisterUser(string userId)
+        public async Task UnregisterUser(string id)
         {
-            await repository.DeleteUser(userId);
+            var user = await repository.GetUserById(id) ?? throw new UserNotFound();
+            await repository.DeleteUser(id);
+            registeredUserPublisher.Publish(user, "users.remove");
         }
     }
 }

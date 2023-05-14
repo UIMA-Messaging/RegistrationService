@@ -34,6 +34,17 @@ namespace RegistrationService.Repository
             return results.FirstOrDefault();
         }
 
+        public async Task<RegisteredUser> GetUserById(string id)
+        {
+            await using var connection = factory.GetOpenConnection();
+            const string sql = @"
+                SELECT *
+                FROM public.""Users""
+                WHERE Id = @Id";
+            var results = await connection.QueryAsync<RegisteredUser>(sql, new { Id = id });
+            return results.FirstOrDefault();
+        }
+
         public async Task CreateUser(RegisteredUser user)
         {
             await using var connection = factory.GetOpenConnection();

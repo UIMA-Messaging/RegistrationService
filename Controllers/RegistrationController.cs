@@ -21,10 +21,10 @@ namespace RegistrationService.Controllers
             return await service.RegisterUser(user);
         }
 
-        [HttpDelete("unregister/{userId}")]
-        public async Task UnregisterUser(string userId)
+        [HttpDelete("unregister/{id}")]
+        public async Task UnregisterUser(string id)
         {
-            await service.UnregisterUser(userId);
+            await service.UnregisterUser(id);
         }
     }
 }
