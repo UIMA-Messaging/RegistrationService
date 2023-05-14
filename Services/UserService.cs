@@ -72,7 +72,15 @@ namespace RegistrationService.Services
         {
             var user = await repository.GetUserById(id) ?? throw new UserNotFound();
             await repository.DeleteUser(id);
-            registeredUserPublisher.Publish(user, "users.remove");
+
+            try
+            {
+                registeredUserPublisher.Publish(user, "users.remove");
+            }
+            catch
+            {
+                Debug.WriteLine($" [x] Could not publish unregistered user `{user.Id}`");
+            }
         }
     }
 }
