@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationService", "RegistrationService.csproj", "{6C6F1006-87E2-48D0-BC2A-62EAFA86B812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationServiceTests", "..\RegistrationServiceTests\RegistrationServiceTests.csproj", "{CF23ED76-1CAC-4420-91C3-D0A8ED3101B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistrationServiceTests", ".\RegistrationServiceTests\RegistrationServiceTests.csproj", "{CF23ED76-1CAC-4420-91C3-D0A8ED3101B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
