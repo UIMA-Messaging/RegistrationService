@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RegistrationService.csproj" />
+    <ProjectReference Include="..\RegistrationService/RegistrationService.csproj" />
   </ItemGroup>
 
 </Project>
