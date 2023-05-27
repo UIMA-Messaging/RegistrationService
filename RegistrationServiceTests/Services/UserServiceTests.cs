@@ -53,7 +53,7 @@ namespace RegistrationService.Services.Tests
             ExchangeKeys = GetExchangeKeys()
         };
 
-        public static RegisteredUser GetRegisteredUser() => new RegisteredUser 
+        public static RegisteredUser GetRegisteredUser() => new() 
         {
             Id = Guid.NewGuid().ToString(),
             // Rest not needed
