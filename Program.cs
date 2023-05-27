@@ -28,8 +28,7 @@ builder.Services.AddControllers().AddJsonOptions(configs =>
 builder.Services.AddControllers();
 
 // Repositories
-builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
-builder.Services.AddSingleton(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
+builder.Services.AddSingleton<IUserRepository>(_ => new UserRepository(new ConnectionFactory(builder.Configuration["ConnectionStrings:Users"])));
 
 //// RabbitMQ
 builder.Services.AddSingleton<IRabbitMQConnection>(_ => new RabbitMQConnection(builder.Configuration["RabbitMQ:Host"], builder.Configuration["RabbitMQ:Username"], builder.Configuration["RabbitMQ:Password"]));
@@ -37,7 +36,7 @@ builder.Services.AddSingleton<IRabbitMQPublisher<RegisteredUser>>(s => new Rabbi
 builder.Services.AddSingleton<IRabbitMQPublisher<ExchangeKeys>>(s => new RabbitMQPublisher<ExchangeKeys>(s.GetRequiredService<IRabbitMQConnection>(), builder.Configuration["RabbitMQ:Exchange"]));
 
 // Services
-builder.Services.AddSingleton(s => new UserService(s.GetRequiredService<UserRepository>(), builder.Configuration["Jabber:Host"], s.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>(), s.GetRequiredService<IRabbitMQPublisher<ExchangeKeys>>()));
+builder.Services.AddSingleton(s => new UserService(s.GetRequiredService<IUserRepository>(), builder.Configuration["Jabber:Host"], s.GetRequiredService<IRabbitMQPublisher<RegisteredUser>>(), s.GetRequiredService<IRabbitMQPublisher<ExchangeKeys>>()));
 
 var app = builder.Build();
 
