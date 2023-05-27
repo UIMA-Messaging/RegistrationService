@@ -30,4 +30,7 @@
   <ItemGroup>
     <Folder Include="Middlewares\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="RegistrationServiceTests\RegistrationServiceTests.csproj" />
+  </ItemGroup>
 </Project>
