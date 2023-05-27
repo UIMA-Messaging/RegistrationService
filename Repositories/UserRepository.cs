@@ -4,7 +4,7 @@ using RegistrationService.Repository.Connection;
 
 namespace RegistrationService.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly IConnectionFactory factory;
 
@@ -16,11 +16,15 @@ namespace RegistrationService.Repository
         public async Task<(bool, int)> CheckDisplayNameAvailability(string displayName)
         {
             await using var connection = factory.GetOpenConnection();
+            
             const string sql = @"
                 SELECT CASE WHEN COUNT(*) != 0 THEN 1 ELSE 0 END, (SELECT COUNT(*) + 1 FROM ""Users"")
                 FROM public.""Users""
                 WHERE DisplayName = @DisplayName";
-            return await connection.QueryFirstAsync<(bool, int)>(sql, new { DisplayName = displayName });
+            
+            var results = await connection.QueryAsync<(bool, int)>(sql, new { DisplayName = displayName });
+            
+            return results.Any() ? results.FirstOrDefault() : (false, 0);
         }
 
         public async Task<RegisteredUser> GetUserByUsername(string username)

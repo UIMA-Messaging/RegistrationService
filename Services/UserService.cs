@@ -8,12 +8,16 @@ namespace RegistrationService.Services
 {
     public class UserService
     {
-        private readonly UserRepository repository;
+        private readonly IUserRepository repository;
         private readonly string jabberHost;
         private readonly IRabbitMQPublisher<RegisteredUser> registeredUserPublisher;
         private readonly IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher;
 
-        public UserService(UserRepository repository, string jabberHost, IRabbitMQPublisher<RegisteredUser> registeredUserPublisher, IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher)
+        public UserService(
+            IUserRepository repository, 
+            string jabberHost, 
+            IRabbitMQPublisher<RegisteredUser> registeredUserPublisher, 
+            IRabbitMQPublisher<ExchangeKeys> keyExchangePublisher)
         {
             this.repository = repository;
             this.jabberHost = jabberHost;
