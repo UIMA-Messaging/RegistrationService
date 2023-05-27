@@ -10,22 +10,22 @@ namespace RegistrationService.Services.Tests
     [TestClass]
     public class UserServiceTests
     {
-        private Mock<IRabbitMQPublisher<RegisteredUser>> mockUserRegistrationPublisher;
-        private Mock<IRabbitMQPublisher<ExchangeKeys>> mockUserExchangeKeyPublisher;
-        private Mock<IUserRepository> mockUserRepository;
-        private string jabberHost;
+        public Mock<IRabbitMQPublisher<RegisteredUser>> mockUserRegistrationPublisher;
+        public Mock<IRabbitMQPublisher<ExchangeKeys>> mockUserExchangeKeyPublisher;
+        public Mock<IUserRepository> mockUserRepository;
+        public string jabberHost;
 
         private UserService userService;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.mockUserExchangeKeyPublisher = new Mock<IRabbitMQPublisher<ExchangeKeys>>();
-            this.mockUserRegistrationPublisher = new Mock<IRabbitMQPublisher<RegisteredUser>>();
-            this.mockUserRepository = new Mock<IUserRepository>();
-            this.jabberHost = "localhost";
+            mockUserExchangeKeyPublisher = new Mock<IRabbitMQPublisher<ExchangeKeys>>();
+            mockUserRegistrationPublisher = new Mock<IRabbitMQPublisher<RegisteredUser>>();
+            mockUserRepository = new Mock<IUserRepository>();
+            jabberHost = "localhost";
 
-            this.userService = new UserService(
+            userService = new UserService(
                 mockUserRepository.Object,
                 jabberHost,
                 mockUserRegistrationPublisher.Object,
@@ -64,7 +64,7 @@ namespace RegistrationService.Services.Tests
         {
             var basicUser = GetBasicUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.CheckDisplayNameAvailability(basicUser.DisplayName))
                 .ReturnsAsync((false, 123));
 
@@ -90,7 +90,7 @@ namespace RegistrationService.Services.Tests
         {
             var basicUser = GetBasicUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.CheckDisplayNameAvailability(basicUser.DisplayName))
                 .ReturnsAsync((true, 0));
 
@@ -104,13 +104,13 @@ namespace RegistrationService.Services.Tests
         {
             var basicUser = GetBasicUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.CheckDisplayNameAvailability(basicUser.DisplayName))
                 .ReturnsAsync((false, 0));
 
             var registeredUser = await userService.RegisterUser(basicUser);
 
-            this.mockUserRepository.Verify(mock => mock.CreateUser(registeredUser), Times.Once);
+            mockUserRepository.Verify(mock => mock.CreateUser(registeredUser), Times.Once);
         }
 
         [TestMethod]
@@ -118,13 +118,13 @@ namespace RegistrationService.Services.Tests
         {
             var basicUser = GetBasicUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.CheckDisplayNameAvailability(basicUser.DisplayName))
                 .ReturnsAsync((false, 0));
 
             var registeredUser = await userService.RegisterUser(basicUser);
 
-            this.mockUserRegistrationPublisher.Verify(mock => mock.Publish(registeredUser, "users.new"), Times.Once);
+            mockUserRegistrationPublisher.Verify(mock => mock.Publish(registeredUser, "users.new"), Times.Once);
         }
 
         [TestMethod]
@@ -132,13 +132,13 @@ namespace RegistrationService.Services.Tests
         {
             var basicUser = GetBasicUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.CheckDisplayNameAvailability(basicUser.DisplayName))
                 .ReturnsAsync((false, 0));
 
             _ = await userService.RegisterUser(basicUser);
 
-            this.mockUserExchangeKeyPublisher.Verify(mock => mock.Publish(basicUser.ExchangeKeys, "users.new.keys"), Times.Once);
+            mockUserExchangeKeyPublisher.Verify(mock => mock.Publish(basicUser.ExchangeKeys, "users.new.keys"), Times.Once);
         }
 
         [TestMethod]
@@ -146,13 +146,13 @@ namespace RegistrationService.Services.Tests
         {
             var regiteredUser = GetRegisteredUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.GetUserById(regiteredUser.Id))
                 .ReturnsAsync(regiteredUser);
 
             await userService.UnregisterUser(regiteredUser.Id);
 
-            this.mockUserRepository.Verify(mock => mock.DeleteUser(regiteredUser.Id), Times.Once);
+            mockUserRepository.Verify(mock => mock.DeleteUser(regiteredUser.Id), Times.Once);
         }
 
         [TestMethod]
@@ -160,13 +160,13 @@ namespace RegistrationService.Services.Tests
         {
             var regiteredUser = GetRegisteredUser();
 
-            this.mockUserRepository
+            mockUserRepository
                 .Setup(mock => mock.GetUserById(regiteredUser.Id))
                 .ReturnsAsync(regiteredUser);
 
             await userService.UnregisterUser(regiteredUser.Id);
 
-            this.mockUserRegistrationPublisher.Verify(mock => mock.Publish(regiteredUser, "users.remove"), Times.Once);
+            mockUserRegistrationPublisher.Verify(mock => mock.Publish(regiteredUser, "users.remove"), Times.Once);
         }
 
         [TestMethod]
