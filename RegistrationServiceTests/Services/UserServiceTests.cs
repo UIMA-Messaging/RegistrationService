@@ -15,7 +15,7 @@ namespace RegistrationService.Services.Tests
         public Mock<IUserRepository> mockUserRepository;
         public string jabberHost;
 
-        private UserService userService;
+        public UserService userService;
 
         [TestInitialize]
         public void Initialize()
