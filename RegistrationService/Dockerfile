@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["RegistrationService.csproj", "."]
-RUN dotnet restore "./RegistrationService.csproj"
+COPY ["RegistrationService/RegistrationService.csproj", "RegistrationService/"]
+RUN dotnet restore "RegistrationService/RegistrationService.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/RegistrationService"
 RUN dotnet build "RegistrationService.csproj" -c Release -o /app/build
 
 FROM build AS publish
