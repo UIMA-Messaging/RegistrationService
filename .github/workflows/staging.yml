@@ -1,4 +1,4 @@
-name: Release Pipeline
+name: Staging Pipeline
 
 on:
   push:
