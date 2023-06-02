@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir ~/.kube
           touch ~/.kube/config
-          echo "${{ secrets.AKS_CONTEXT }}" >> ~/.kube/config
+          echo "${{ secrets.STAGING_AKS_CONTEXT }}" >> ~/.kube/config
 
       - name: Deploy application
         run: kubectl apply -f k8s/staging-deployment.yml
