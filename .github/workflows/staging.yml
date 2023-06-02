@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Release Pipeline
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: dockeroo80/uima-registration-service
-          tags: latest
+          tags: staging
           registry: docker.io
           dockerfile: RegistrationService/Dockerfile
           username: dockeroo80
@@ -54,7 +54,7 @@ jobs:
           echo "${{ secrets.AKS_CONTEXT }}" >> ~/.kube/config
 
       - name: Deploy application
-        run: kubectl apply -f k8s/deployment.yml
+        run: kubectl apply -f k8s/staging-deployment.yml
 
       - name: Restart pod
         run: kubectl rollout restart deploy registration-app
