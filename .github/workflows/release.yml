@@ -21,9 +21,20 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
-        
-  docker:
+
+  regression-tests:
     needs: build
+
+    runs-on: ubuntu-latest
+    steps:
+        - name: Run Cucumber Regression
+          uses: greffgreff/run-java-tests-action@1.0
+          with:
+            repo: https://github.com/UIMA-Messaging/uima-test-suite.git
+            branch: master
+  
+  docker:
+    needs: regression-tests
 
     runs-on: ubuntu-latest
     steps:
