@@ -1,11 +1,11 @@
 name: Staging Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
       - master
       
-jobs:
+jobs: 
   build:
     runs-on: ubuntu-latest
     steps:
@@ -33,9 +33,9 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: dockeroo80/uima-registration-service
-          tags: staging
+          tags: ${GITHUB_HEAD_REF##*/}
           registry: docker.io
-          dockerfile: RegistrationService/Dockerfile
+          dockerfile: Dockerfile
           username: dockeroo80
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           
@@ -46,15 +46,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Generate kube configuration
         run: |
           mkdir ~/.kube
           touch ~/.kube/config
           echo "${{ secrets.STAGING_AKS_CONTEXT }}" >> ~/.kube/config
-
       - name: Deploy application
-        run: kubectl apply -f k8s/staging-deployment.yml
-
+        run: |
+          sed -e "s|IMAGE_TAG|$(echo ${GITHUB_HEAD_REF##*/})|g" k8s/deployment.yml | kubectl apply -f -
       - name: Restart pod
-        run: kubectl rollout restart deploy registration-app
+        run: kubectl rollout restart deploy registration-service-app
