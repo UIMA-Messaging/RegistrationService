@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: registration-service
-          image: dockeroo80/uima-registration-service
+          image: dockeroo80/uima-registration-service:IMAGE_TAG
           ports:
             - containerPort: 80
           env:
