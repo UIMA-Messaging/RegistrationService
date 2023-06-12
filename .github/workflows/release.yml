@@ -35,7 +35,7 @@ jobs:
   
   docker:
     needs: regression-tests
-
+    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,9 +44,9 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: dockeroo80/uima-registration-service
-          tags: latest
+          tags: ${{ github.ref_name }}
           registry: docker.io
-          dockerfile: RegistrationService/Dockerfile
+          dockerfile: Dockerfile
           username: dockeroo80
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           
@@ -57,15 +57,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Generate kube configuration
         run: |
           mkdir ~/.kube
           touch ~/.kube/config
           echo "${{ secrets.AKS_CONTEXT }}" >> ~/.kube/config
-
       - name: Deploy application
-        run: kubectl apply -f k8s/deployment.yml
-
+        run: |
+          sed -e 's|IMAGE_TAG|${{ github.ref_name }}|g' k8s/deployment.yml | kubectl apply -f -
       - name: Restart pod
-        run: kubectl rollout restart deploy registration-app
+        run: kubectl rollout restart deploy uima-registration-service
