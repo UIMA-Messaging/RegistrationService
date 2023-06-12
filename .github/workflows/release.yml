@@ -66,4 +66,4 @@ jobs:
         run: |
           sed -e 's|IMAGE_TAG|${{ github.ref_name }}|g' k8s/deployment.yml | kubectl apply -f -
       - name: Restart pod
-        run: kubectl rollout restart deploy uima-registration-service
+        run: kubectl rollout restart deploy registration-service
