@@ -41,7 +41,7 @@ The Registration Service has one controller for handling all user registrations.
 
 `POST users/register`
 
-This endpoint is responsible for registering basic users. Should validation of data fail or a conflicting display name occur, a 400 reponse is returned along with a message. When a user is registered, hes registration is published to an event bus with routing key `users.new` and his exchange keys, with routing key `users.new.keys`.  
+This endpoint is responsible for registering basic users. Should validation of data fail or a conflicting display name occur, a 400 reponse is returned along with a message. When a user is registered, hes registration is published to an event bus with routing key `users.new` and his exchange keys, with routing key `users.new.keys`.
 
 Request body:
 ```json
@@ -78,5 +78,4 @@ Response body:
 
 `DELETE users/unregister/{user}`
 
-
-
+This endpoint is responsible for deleting a user `user` from the system. Upon request, the `user` is published to an event bus with routing key `users.remove`.
